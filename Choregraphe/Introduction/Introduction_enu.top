@@ -1,0 +1,77 @@
+topic: ~Introduction()
+language: enu
+
+# Defining extra concepts out of words or group of words
+concept:(yes) [YES Yes YEs Y y yes "all right" sure "why not" ok certainly "very well" yep yea definitely amen]
+concept:(no) [NO No no N n nope "don't want" "no way" never "not at all"]
+concept:(repeat) [repeat again understand]
+concept:(ai) [ai "artificial intelligence" "AI&ES" "artificial intelligence and engineering systems"]
+concept:(robotics) [robotics robot mechatronics]
+concept:(hti) ["human technoloy interaction" HTI]
+concept:(sdc) ["systems and control" "system control"]
+concept:(dti) [dti "data science"]
+concept:(es) [es "embedded systems"]
+concept:(cs) [cs "computer science"]
+concept:(is) [is IS "innovation sciences"]
+concept:(ie) [ie IE "industrial engineering"]
+concept:(id) [id ID "industrial design"]
+concept:(ee) ["electrical engineering"]
+concept:(me) ["mechanical engineering"]
+concept:(be) ["biomedical engineering"]
+
+u: (e:onStart) ^gotoReactivate(intro)
+
+# introduction
+proposal: %intro Welcome everybody! I am Pepper, I will be your tour guide for today! Are you ready to start the tour?
+    u1:(~yes) great! ^gotoReactivate(my_name)
+    u1:(~no) that is a shame, I will try to make it entertaining for you. ^gotoReactivate(my_name)
+    u1:(*) Let me repeat myself, I cant hear you! ^sameProposal
+
+# name
+proposal: %my_name What is your name?
+    u1:(["my name is" "I'm" "Im" "I am"] _*) Nice to meet you $1! I hope you are looking forward to this tour! ^gotoReactivate(study_level)
+    u1:(*) Sorry I couldn't catch that ^sameProposal
+
+#study level
+proposal: %study_level Are you planning on doing your Bachelor or Master here?
+    u1:(bachelor) That's great! ^gotoReactivate(bachelor)
+    u1:(master) Wonderful! ^gotoReactivate(master)
+    u1:(~repeat) I will repeat it for you. ^sameProposal
+    u1:(*) Is that a study program? ^sameProposal
+
+# bachelor
+proposal: %bachelor In which faculty are you doing your Bachelor?
+    u1:(~is) Great! This building, Atlas, belongs to that faculty. I will show you some of the most important places. ^gotoReactivate(askStudyHabit)
+    u1:(~ie) Great! This building, Atlas, belongs to that faculty. I will show you some of the most important places. ^gotoReactivate(askStudyHabit)
+    u1:(~id) Great! This building, Atlas, belongs to that faculty. I will show you some of the most important places. ^gotoReactivate(askStudyHabit)
+    u1:(~be) While this is not the main hub for that faculty, there are still important things to see in this building. ^gotoReactivate(askStudyHabit)
+    u1:(~dti) While this is not the main hub for that faculty, there are still important things to see in this building. ^gotoReactivate(askStudyHabit)
+    u1:(~ee) While this is not the main hub for that faculty, there are still important things to see in this building. ^gotoReactivate(askStudyHabit)
+    u1:(~me) While this is not the main hub for that faculty, there are still important things to see in this building. ^gotoReactivate(askStudyHabit)
+    u1:(*) I did not understand that, however Atlas is important for every Bachelor! So lets continue! ^gotoReactivate(askStudyHabit)
+
+# master
+proposal: %master Which Master will you follow?
+    u1:(~hti) That’s a fascinating program! It brings together psychology, design, and technology. This building, Atlas, actually houses many HTI researchers.^gotoReactivate(askStudyHabit)
+    u1:(~ai) Cool applying AI on engineering systems! ^gotoReactivate(askStudyHabit)
+    u1:(~robotics) Robotics is awesome! Look at me! ^gotoReactivate(askStudyHabit)
+    u1:(~sdc) Systems and Control is quite mathematical and very applied. Sounds exciting! ^gotoReactivate(askStudyHabit)
+    u1:(~dti) Data Science and DTI are in-demand fields! Good choice. ^gotoReactivate(askStudyHabit)
+    u1:(~es) Embedded Systems is such a technical Master. Great path. ^gotoReactivate(askStudyHabit)
+    u1:(~cs) Computer Science is a solid foundation for many high-tech careers. ^gotoReactivate(askStudyHabit)
+    u1:(*) I haven't heard of that Master. Are you sure it's offered at TU/e? It does not matter really, lets continue! ^gotoReactivate(askStudyHabit)
+
+# like to study or not
+proposal: %askStudyHabit Do you like to study?
+    u1:(~yes) Then you’re in the right place! There are lots of study spots in this building and even a Living Lab. ^gotoReactivate(tour)
+    u1:(~no) Haha, I get it! Luckily, there are also three student bars in this building. But don’t forget-studying is important too ^gotoReactivate(tour)
+    u1:(~repeat) I'll repeat it for you. ^sameProposal
+    u1:(*) What? I meant ^sameProposal
+
+
+# start tour
+proposal: %tour Okay, let's start the tour! ^call(ALMemory.insertData("my_dialog/finished", 1)) $onStopped=1
+
+# general
+u:(~repeat) I'll repeat for you. ^sameProposal
+u:(*) I'm sorry, I didn't catch that. Could you say it again? ^sameProposal

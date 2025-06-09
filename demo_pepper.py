@@ -4,16 +4,14 @@ import behaviour_based_navigation_nao_2 as bh
 import qi
 from naoqi import ALProxy
 import demo_movements as movements
+import demo_conversations as conversations
 # import beckon
 # import movement
 
 
-ip="192.168.0.119"
-port=9559
-
-
-
-
+ip="127.0.0.1" #Virtual Robot ip
+#ip="192.168.0.119" #Actual Robot ip
+port = 9559
 
 # Voor ons: eerste keer 1x wake up en autonomousoff
 
@@ -93,9 +91,9 @@ def findTarget():
 if __name__ == "__main__":
     nao.InitProxy(ip,[0],port)
     motion.wakeUp()
-    nao.Say("Come join, the tour is about to start!")
+    #nao.Say("Come join, the tour is about to start!")
     # movements.wave()
-    
+    conversations.start_dialog(ip, port)
      # start implementeren
     target_found = False
     time.sleep(5)
