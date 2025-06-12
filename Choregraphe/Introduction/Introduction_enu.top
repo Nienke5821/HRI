@@ -19,8 +19,9 @@ concept:(ee) ["electrical engineering"]
 concept:(me) ["mechanical engineering"]
 concept:(be) ["biomedical engineering"]
 
-u: (e:onStart) ^gotoReactivate(intro)
+u: (e:onStart) i am talking ^gotoReactivate(intro)
 
+#proposal: ~start ^gotoReactivate(intro)
 # introduction
 proposal: %intro Welcome everybody! I am Pepper, I will be your tour guide for today! Are you ready to start the tour?
     u1:(~yes) great! ^gotoReactivate(my_name)

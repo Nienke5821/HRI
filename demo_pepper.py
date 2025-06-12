@@ -9,8 +9,8 @@ import demo_conversations as conversations
 # import movement
 
 
-ip="127.0.0.1" #Virtual Robot ip
-#ip="192.168.0.119" #Actual Robot ip
+# ip="127.0.0.1" #Virtual Robot ip
+ip="192.168.0.119" #Actual Robot ip
 port = 9559
 
 # Voor ons: eerste keer 1x wake up en autonomousoff
@@ -58,23 +58,37 @@ eye_leds = "FaceLeds"
 #     # return landmarkNumber
 #     return 5
 
-
+import math
 def findTarget():
     detected = False
-    motion.setAngles("HeadYaw", -1, 0.2) # look left
+    motion.moveTo(0, 0, math.pi / 2)
+    motion.setAngles("HeadYaw", 1.2, 0.2) # look left
     # detected = False
-    nao.Say("start while loop one")
+    # nao.Say("start while loop one")
     time.sleep(1)
     while not detected:
+        direction = "correct"
         navigation.navigateTo(0.3, 0)
         time.sleep(2)
         detected, _, landmarkinfo = nao.DetectLandMark()
         print(detected)
+        if detected:
+            # nao.Say("detected")
+            break
+        motion.setAngles("HeadYaw", 0, 0.2)
+        motion.moveTo(0, 0, math.pi/2)
+        direction = "wall"
+        if detected:
+            # nao.Say("detected")
+            break
+        motion.setAngles("HeadYaw", 1.2, 0.2)
+        motion.moveTo(0, 0,  - math.pi/2)
+        direction = "correct"
 
 
         # distance to target
         #calculate distance target
-    nao.Say("exited while loop one")
+    # nao.Say("exited while loop one")
     landmarkTheoreticalSize = 0.092
     memoryProxy = ALProxy("ALMemory", ip, 9559)
     landmarkProxy = ALProxy("ALLandMarkDetection", ip, 9559)
@@ -83,9 +97,17 @@ def findTarget():
     
     while (len(markData) == 0):
         markData = memoryProxy.getData("LandMarkDetected")
-    nao.Say("detected")
+    # nao.Say("detected")
     print(landmarkinfo)
     print(landmarkinfo[0][0])
+    if direction == "wall":
+        motion.setAngles("HeadYaw", 0, 0.2)
+        motion.moveTo(0, 0, - math.pi)
+    else: # correct
+        motion.setAngles("HeadYaw", 0, 0.2)
+        motion.moveTo(0, 0, - math.pi / 2)
+    
+    return landmarkinfo[0][0]
 
 
 if __name__ == "__main__":
@@ -93,15 +115,55 @@ if __name__ == "__main__":
     motion.wakeUp()
     #nao.Say("Come join, the tour is about to start!")
     # movements.wave()
-    conversations.start_dialog(ip, port)
+    # conversations.start_dialog(ip, port)
      # start implementeren
-    target_found = False
-    time.sleep(5)
+    time.sleep(1)
 
     # introduction tekst
     # look for target and tell information
-    # while True:
-    # landmarkNumber = findTarget()
+    conversations_had = 0
+    landmarkNumber = 0
+    while True:
+        if conversations_had == 0:
+            movements.wave(ip, port)
+        elif conversations_had == 1 or conversations_had == 2:
+            nao.Say("Gather around.")
+            movements.gather_around(ip, port)
+        else: # conversations had == 3
+            movements.point_to(ip, port)
+        # conversations.have_one_dialog(ip, port, landmarkNumber)
+        nao.Tracker()
+        if landmarkNumber == 0:
+            nao.Say("Here I welcome you to my tour. This is the first conversation.")
+                
+        elif landmarkNumber == 64:
+                nao.Say("Here you can find the restaurant Brownies and Downies. This is the second conversation. I make a joke that I hope I don't fall of the stairs.")
+        elif landmarkNumber == 80:
+                nao.Say("Atlas organises a lot of activities. This is the third conversation.")
+        elif landmarkNumber == 85:
+                nao.Say("We just passed the PhD defense room. Here I tell you something about intermate. This is the fourth conversation. ")
+        else:
+             nao.Say("Unfortunately I do not have any information about this location.")
+        time.sleep(3)
+        nao.Tracker(0)
+        print(landmarkNumber)
+        conversations_had += 1
+        if conversations_had == 2:
+             movements.hide_eyes(ip, port)
+             time.sleep(1)
+        if conversations_had == 4:
+            time.sleep(2)
+            nao.Say("Now it is time to give me a big round of applause.")
+            movements.bow(ip, port)
+            time.sleep(5)
+            break
+        time.sleep(2)
+        movements.join_turn
+        time.sleep(1)
+        landmarkNumber = findTarget()
+        time.sleep(2)
+        print("landmark detected", landmarkNumber)
+        
 
     time.sleep(5)
     nao.Crouch()
