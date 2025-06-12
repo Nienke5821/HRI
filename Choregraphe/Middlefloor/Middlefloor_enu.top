@@ -1,0 +1,35 @@
+topic: ~Middlefloor()
+language: enu
+
+# Defining extra concepts out of words or group of words
+concept:(yes) [YES Yes YEs Y y yes "all right" sure "why not" ok certainly "very well" yep yea definitely amen]
+concept:(no) [NO No no N n nope "don't want" "no way" never "not at all"]
+concept:(main) [main hall "main hall" accommodate]
+concept:(annual) [annual events "annual events"]
+concept:(wervy) [wervy wervingsdagen career expo "career expo"]
+concept:(repeat) [repeat again understand]
+
+u: (e:onStart) ^gotoReactivate(intro2)
+
+#Introduction
+proposal: %intro2 As I said, there is always a lot going on inside Atlas. The main floor of Atlas is a dynamic space hosting various events throughout the year. Notable events include the WinterTU/e Village, which transforms the area into a festive hub, and the Wervingsdagen Career Expo, where over 180 companies connect with students for career opportunities. Each week you can walk inside Atlas and wonder what big event is being organized now, it keeps me enthusiastic to come here every day. If I were a student, but I am a robot, so I don't really care.We are halfway on this tour. But before we continue do I need to repeat something?
+
+u1: (~yes) Shall I repeat the part about the events? ^gotoReactivate(repeat2)
+u1: (~no) ^gotoReactivate(questions2)
+u1: (*) What did you say? Do I need to repeat something? About the events? ^gotoReactivate(repeat2)
+
+proposal: %repeat2
+    u1:(~yes) There is always a lot going on inside Atlas. The main floor can be used for many big events. One of the big events is for example the WinterTU/e Village. Also, a part of the Wervingsdagen exposition is on this floor. Each week you can walk inside Atlas and wonder what big event is being organized now. Do I need to repeat it again? ^sameProposal
+    u1:(~no) ^gotoReactivate(questions2)
+    u1:(*) Sorry I did not understand you, do I need to repeat something about the events? ^sameProposal
+    
+proposal: %questions2 Do you have any questions? I can answer questions about the main hall, annual events, wervingsdagen?
+    u1:(~main) Up to 500 seated or 1,000 standing, depending on the setup. ^sameProposal
+    u1:(~annual) The Green Office’s “Sustainability Fair” and the “International Student Welcome Day.” ^sameProposal
+    u1:(~wervy) Students can meet representatives from over 180 companies, attend workshops, and explore career opportunities. ^sameProposal
+    u1:(~no) I am too tired to take the stairs, let's go to the elevators at the north side of the building, follow me! ! ^call(ALMemory.insertData("my_dialog/finished", 1)) $onStopped=1
+    u1:(*) Sorry I did not understand or cannot answer your question. Please contact a real person for any other questions, but for now ^sameProposal
+
+# general
+u:(~repeat) I'll repeat for you. ^sameProposal
+#u:(*) I'm sorry, I didn't catch that. Could you say it again? ^sameProposal

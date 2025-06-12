@@ -1,0 +1,40 @@
+topic: ~Elevators()
+language: enu
+
+# Defining extra concepts out of words or group of words
+concept:(yes) [YES Yes YEs Y y yes "all right" sure "why not" ok certainly "very well" yep yea definitely amen]
+concept:(no) [NO No no N n nope "don't want" "no way" never "not at all"]
+concept:(phd) [phd]
+concept:(industria) [industria]
+concept:(intermate) [intermate]
+concept:(program) [program study studies]
+concept:(activities) [activities Intermate]
+concept:(events) [Industria events]
+concept:(repeat) [repeat again understand]
+
+u: (e:onStart) ^gotoReactivate(intro3)
+
+#Introduction
+proposal: %intro3 We just passed the PhD defense room. Behind the elevators, you'll find two prominent study associations from the Department of Industrial Engineering & Innovation Sciences: Intermate and Industria. Intermate is the study association for students enrolled in the bachelor's programs Sustainable Innovation and Psychology & Technology, as well as the master's programs Human-Technology Interaction and Innovation Management. The association focuses on the intersection of technology, human behavior, and sustainability. Intermate organizes a variety of activities, including educational workshops, career events, and social gatherings, to support students academically and socially. Industria is the study association for students pursuing the bachelor's program Industrial Engineering and Management Sciences and the master's programs Innovation Management and Operations Management & Logistics. With approximately 1,400 members, Industria is one of the largest study associations at TU/e. The association aims to support students by organizing educational events, company visits, and social activities, fostering a strong community within the field of industrial engineering. Both associations play a vital role in enriching the student experience within their respective programs, offering opportunities for professional development, networking, and community building.We are at the end of the tour. Do I need to repeat something? 
+
+u1: (~yes) What part do I need to repeat? About the Phd students or about Intermate or Industria? ^gotoReactivate(repeat3)
+u1: (~no) ^gotoReactivate(questions3)
+u1: (*) What did you say? Do I need to repeat something? About the Phd students or about Intermate or Industria? ^gotoReactivate(repeat)
+
+proposal: %repeat3
+    u1:(~phd) The defense room of the Phd students. Do I need to repeat something else?
+    u1:(~industria) Industria is the study association for students pursuing the bachelor's program Industrial Engineering and Management Sciences and the master's programs Innovation Management and Operations Management & Logistics. With approximately 1,400 members, Industria is one of the largest study associations at TU/e. The association aims to support students by organizing educational events, company visits, and social activities, fostering a strong community within the field of industrial engineering. Do I need to repeat something else? ^sameProposal
+    u1: (~intermate) Intermate is the study association for students enrolled in the bachelor's programs Sustainable Innovation and Psychology & Technology, as well as the master's programs Human-Technology Interaction and Innovation Management. The association focuses on the intersection of technology, human behavior, and sustainability. Intermate organizes a variety of activities, including educational workshops, career events, and social gatherings, to support students academically and socially. Do I need to repeat something else? ^sameProposal
+    u1:(~no) ^gotoReactivate(questions3)
+    u1:(*) Sorry I did not understand you, do I need to repeat something about the Phd students or about Intermate or Industria? ^sameProposal
+    
+proposal: %questions3 Do you have any questions? I can answer questions about the study programs and activities of Intermate or the events of Industria?
+    u1:(~program) Intermate represents students from the bachelor's programs Sustainable Innovation and Psychology & Technology, as well as the master's programs Human-Technology Interaction and Innovation Management. ^sameProposal
+    u1:(~activities) Intermate offers a variety of activities, including educational workshops, career events, social gatherings, and study trips, all aimed at enhancing the academic and social experience of its members. ^sameProposal 
+    u1:(~events)  Industria organizes a wide range of activities, including educational events, company visits, career fairs, and social gatherings, all aimed at supporting students' academic and professional development. ^sameProposal
+    u1:(~no) Thank you for following me on this short tour! I had fun! I hope you also had some fun! See you next time! ! ^call(ALMemory.insertData("my_dialog/finished", 1)) $onStopped=1
+    u1:(*) Sorry I did not understand or cannot answer your question. Please contact a real person for any other questions, but for now ^sameProposal
+
+# general
+u:(~repeat) I'll repeat for you. ^sameProposal
+#u:(*) I'm sorry, I didn't catch that. Could you say it again? ^sameProposal
