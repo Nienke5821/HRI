@@ -126,11 +126,13 @@ if __name__ == "__main__":
     while True:
         if conversations_had == 0:
             movements.wave(ip, port)
-        elif conversations_had == 1 or conversations_had == 2:
+        elif landmarkNumber == 64 or landmarkNumber == 80:
             nao.Say("Gather around.")
             movements.gather_around(ip, port)
-        else: # conversations had == 3
+        elif landmarkNumber == 85:
             movements.point_to(ip, port)
+        else:
+             movements.hide_eyes(ip, port)
         # conversations.have_one_dialog(ip, port, landmarkNumber)
         nao.Tracker()
         if landmarkNumber == 0:
@@ -148,7 +150,7 @@ if __name__ == "__main__":
         nao.Tracker(0)
         print(landmarkNumber)
         conversations_had += 1
-        if conversations_had == 2:
+        if landmarkNumber == 64:
              movements.hide_eyes(ip, port)
              time.sleep(1)
         if conversations_had == 4:
