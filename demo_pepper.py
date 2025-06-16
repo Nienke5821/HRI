@@ -1,28 +1,28 @@
-import nao_2_1_1 as nao
-import time
-import behaviour_based_navigation_nao_2 as bh
-import qi
-from naoqi import ALProxy
-import demo_movements as movements
-import demo_conversations as conversations
-import math
+# Import custom modules and standard libraries
+import nao_2_1_1 as nao                   # Custom module containing helper functions for Nao robot
+import time                               # Standard Python time module for delays
+import behaviour_based_navigation_nao_2 as bh  # Custom behavior-based navigation module
+import qi                                 # NAOqi framework module for connecting to the robot
+from naoqi import ALProxy                 # Used to access robot modules (proxies)
+import demo_movements as movements        # Custom module with Pepper's movement functions
+import demo_conversations as conversations # Custom module with conversation dialogs
+import math                               # Standard math module (used here for rotations in radians)
 
+# Connect to either the virtual or actual Pepper robot
+# ip = "127.0.0.1"  # Uncomment for virtual robot
+ip = "192.168.0.119"  # IP address of the actual robot
+port = 9559           # Default port for NAOqi communication
 
-# ip="127.0.0.1" #Virtual Robot ip
-ip="192.168.0.119" #Actual Robot ip
-port = 9559
-
-
-# Initalize all the proxies we need
-motion = ALProxy("ALMotion", ip, port)
-life = ALProxy("ALAutonomousLife", ip, port)
-navigation = ALProxy("ALNavigation", ip, port)
-life.setState("disabled") # we turn autonomous mode off
-memoryProxy = ALProxy("ALMemory", ip, 9559)
-landmarkProxy = ALProxy("ALLandMarkDetection", ip, 9559)
-landmarkProxy.subscribe("landmarkTest")
-leds = ALProxy("ALLeds", ip, port)
-eye_leds = "FaceLeds"
+# Initialize proxies (interfaces to robot modules)
+motion = ALProxy("ALMotion", ip, port)             # Controls movement and posture
+life = ALProxy("ALAutonomousLife", ip, port)       # Controls autonomous behavior (e.g. idle postures)
+navigation = ALProxy("ALNavigation", ip, port)     # Controls navigation
+life.setState("disabled")                          # Disable autonomous behavior for manual control
+memoryProxy = ALProxy("ALMemory", ip, port)        # Memory proxy used to retrieve sensor data
+landmarkProxy = ALProxy("ALLandMarkDetection", ip, port)  # Used to detect NAO marks
+landmarkProxy.subscribe("landmarkTest")            # Subscribe to landmark detection
+leds = ALProxy("ALLeds", ip, port)                 # Control robot LEDs (not used directly in this script)
+eye_leds = "FaceLeds"                              # Alias for facial LEDs
 
 
 def findTarget():
@@ -37,64 +37,75 @@ def findTarget():
     Returns:
         int: the number of the landmark it has detected.
     """
-    detected = False # not detected
-    motion.moveTo(0, 0, math.pi / 2) # rotate 90 degrees left
-    motion.setAngles("HeadYaw", 1.2, 0.2) # look left
-    time.sleep(1)
+    detected = False  # Initially, no landmark is detected
+
+    # Start scanning: rotate body 90 degrees left and head to the left
+    motion.moveTo(0, 0, math.pi / 2)
+    motion.setAngles("HeadYaw", 1.2, 0.2)  # Turn head left
+    time.sleep(1)  # Wait for stabilization
+
     while not detected:
-        direction = "correct" # standing parallel with the wall
-        navigation.navigateTo(0.3, 0) # move 30 centimeters forward
-        time.sleep(2)
-        detected, _, landmarkinfo = nao.DetectLandMark() # try to detect the landmark
-        if detected: # the landmark has been found, so we discontinue the loop
+        direction = "correct"  # Assume parallel to the wall
+        navigation.navigateTo(0.3, 0)  # Move 30 cm forward
+        time.sleep(2)  # Wait for the move to complete
+
+        # Try to detect a landmark
+        detected, _, landmarkinfo = nao.DetectLandMark()
+        if detected:
             break
-        # the landmark is not detected
-        motion.setAngles("HeadYaw", 0, 0.2) # look forward
-        motion.moveTo(0, 0, math.pi/2) # standing facing the wall
+
+        # If not detected, rotate to face the wall
+        motion.setAngles("HeadYaw", 0, 0.2)  # Look straight
+        motion.moveTo(0, 0, math.pi / 2)     # Turn 90° left to face the wall
         direction = "wall"
-        if detected:# landmark has been found, discontinue the loop
+
+        if detected:
             break
-        motion.setAngles("HeadYaw", 1.2, 0.2) # look left
-        motion.moveTo(0, 0,  - math.pi/2) # move right such that pepper is parallel with the wall
-        direction = "correct" # standing parallel with the wall
+
+        # Adjust to be parallel again and scan again
+        motion.setAngles("HeadYaw", 1.2, 0.2)  # Look left
+        motion.moveTo(0, 0, -math.pi / 2)      # Turn 90° right to become parallel again
+        direction = "correct"
 
 
-    # get the proxies we need
+    # Resubscribe the proxies just in case
     memoryProxy = ALProxy("ALMemory", ip, 9559)
     landmarkProxy = ALProxy("ALLandMarkDetection", ip, 9559)
     landmarkProxy.subscribe("landmarkTest")
+
+    # Poll until the landmark is available in memory
     markData = memoryProxy.getData("LandmarkDetected")
+    while len(markData) == 0:
+        markData = memoryProxy.getData("LandmarkDetected")
     
-    while (len(markData) == 0): # the landmark is not detected
-        markData = memoryProxy.getData("LandMarkDetected") # detect the landmark
-    print(landmarkinfo[0][0]) # we can see whether it detects the correct landmark
-    if direction == "wall": # faced towards wall, has to rotate 180 degrees
-        motion.setAngles("HeadYaw", 0, 0.2) # look forward
-        motion.moveTo(0, 0, - math.pi) # rotate body 180 degrees
-    else: # positioned parallel with wall, has to rotate 90 degrees right
-        motion.setAngles("HeadYaw", 0, 0.2) # look forward
-        motion.moveTo(0, 0, - math.pi / 2) # rotate body 90 degrees to the right
-    
-    return landmarkinfo[0][0] # return the landmarknumber
+    # Reorient Pepper to face the audience (turn away from the landmark)
+    if direction == "wall":
+        motion.setAngles("HeadYaw", 0, 0.2)
+        motion.moveTo(0, 0, -math.pi)  # Rotate 180° if facing wall
+    else:
+        motion.setAngles("HeadYaw", 0, 0.2)
+        motion.moveTo(0, 0, -math.pi / 2)  # Rotate 90° if parallel
 
+    return landmarkinfo[0][0]  # Return the ID of the detected landmark
 
+# Main program loop
 if __name__ == "__main__":
-    nao.InitProxy(ip,[0],port) # connect to Pepper
-    motion.wakeUp() # make Pepper "alive" with autonomous mode turned off
+    # Connect to the robot using helper method
+    nao.InitProxy(ip, [0], port)
     
-    landmarkNumber = 0 # initial value, starting point of tour, no landmark is detected yet so we set this to 0
-    
-    while True: # endless loop
-  
-        # conversations.have_one_dialog(ip, port, landmarkNumber) # normally we do this and in this function it selects the
-        # corresponding conversation, however, the implementation does not work so we have implemented something else that
-        # shows the conversations and what is said in there
+    # Wake up the robot (activates motors)
+    motion.wakeUp()
 
-        nao.Tracker() # track faces while pepper is talking
-        
-        if landmarkNumber == 0: # first conversation
+    landmarkNumber = 0  # Start of the tour, no landmark detected yet
+
+    while True:
+        # Enable face tracking while Pepper talks
+        nao.Tracker()
+
+        # Execute different behavior based on the current landmark
+        if landmarkNumber == 0: # First conversation
             nao.Say("Welcome everybody! I am Pepper, I will be your tour guide for today! Are you ready to start the tour?")
-            movements.wave(ip, port) # gather attention, welcome people by waving
+            movements.wave(ip, port) # Gather attention, welcome people by waving
             conversations.have_one_dialog(ip, port, 0)
         elif landmarkNumber == 64:
             movements.gather_around(ip, port)
@@ -110,21 +121,24 @@ if __name__ == "__main__":
         elif landmarkNumber == 85:
             nao.Say("We just passed the PhD defense room. Did you see it?")
             movements.point_to(ip, port)
-            time.sleep(3)
             conversations.have_one_dialog(ip, port, 3)
             nao.Say("Now it is time to give me a big round of applause.")
             movements.bow(ip, port)
-            break
+            break # End the loop after final landmark
         else:
+            # If an unknown landmark is detected
             movements.hide_eyes(ip, port)
             nao.Say("Unfortunately I do not have any information about this location.")
 
-        nao.Tracker(0) # turn face tracker off such that it can focus on finding the next landmark
-        
-        movements.join_turn
-        landmarkNumber = findTarget() # move to the next target
+        # Turn off face tracking before searching for next landmark
+        nao.Tracker(0)
+
+         # Locate the next landmark
+        movements.join_turn(ip, port) 
+        landmarkNumber = findTarget()
         print("landmark detected", landmarkNumber)
-        
+    
+    # After tour ends, wait a bit and crouch down
     time.sleep(5)
     nao.Crouch()
 

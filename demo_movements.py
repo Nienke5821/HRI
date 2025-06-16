@@ -1,9 +1,7 @@
 from naoqi import ALProxy
 import nao_2_1_1 as nao
 
-
 def wave(ip, port):
-    # Choregraphe bezier export in Python.
     # Choregraphe bezier export in Python.
     from naoqi import ALProxy
     names = list()
@@ -79,16 +77,12 @@ def wave(ip, port):
     keys.append([[-0.00924587, [3, -0.333333, 0], [3, 0.346667, 0]], [0.788434, [3, -0.346667, 0], [3, 0.4, 0]], [-0.00924587, [3, -0.4, 0], [3, 0.426667, 0]], [0.523052, [3, -0.426667, 0], [3, 0.293333, 0]], [0.0459781, [3, -0.293333, 0], [3, 0.266667, 0]], [0.0966001, [3, -0.266667, -0.050622], [3, 0.24, 0.0455598]], [0.429478, [3, -0.24, 0], [3, 0.28, 0]], [-0.00924586, [3, -0.28, 0], [3, 0, 0]]])
 
     try:
-    # uncomment the following line and modify the IP if you use this script outside Choregraphe.
-    # motion = ALProxy("ALMotion", IP, 9559)
         motion = ALProxy("ALMotion", ip, port)
         motion.angleInterpolationBezier(names, times, keys)
     except BaseException, err:
         print err
 
-
 def join_turn(ip, port):
-
     # Choregraphe bezier export in Python.
     from naoqi import ALProxy
     names = list()
@@ -164,14 +158,10 @@ def join_turn(ip, port):
     keys.append([[-0.0107799, [3, -0.333333, 0], [3, 0.32, 0]], [0.7869, [3, -0.32, 0], [3, 0.253333, 0]], [0.688724, [3, -0.253333, 0.098176], [3, 0.333333, -0.129179]], [0.00302601, [3, -0.333333, 0], [3, 0, 0]]])
 
     try:
-    # uncomment the following line and modify the IP if you use this script outside Choregraphe.
-    # motion = ALProxy("ALMotion", IP, 9559)
         motion = ALProxy("ALMotion", ip, port)
         motion.angleInterpolationBezier(names, times, keys)
     except BaseException, err:
         print err
-
-
 
 def gather_around(ip, port):
     # Choregraphe bezier export in Python.
@@ -249,13 +239,10 @@ def gather_around(ip, port):
     keys.append([[-0.0107799, [3, -0.333333, 0], [3, 0.266667, 0]], [1.47873, [3, -0.266667, 0], [3, 0.24, 0]], [1.15199, [3, -0.24, 0.128856], [3, 0.28, -0.150332]], [0.64117, [3, -0.28, 0.189288], [3, 0.293333, -0.198302]], [-0.0107799, [3, -0.293333, 0], [3, 0, 0]]])
 
     try:
-    # uncomment the following line and modify the IP if you use this script outside Choregraphe.
-    # motion = ALProxy("ALMotion", IP, 9559)
         motion = ALProxy("ALMotion", ip, port)
         motion.angleInterpolationBezier(names, times, keys)
     except BaseException, err:
         print err
-
 
 def hide_eyes(ip, port):
     # Choregraphe bezier export in Python.
@@ -333,13 +320,10 @@ def hide_eyes(ip, port):
     keys.append([[0.00302601, [3, -0.333333, 0], [3, 0.28, 0]], [0.317496, [3, -0.28, -0.0889326], [3, 0.24, 0.076228]], [0.498508, [3, -0.24, -0.144432], [3, 0.28, 0.168504]], [1.2563, [3, -0.28, 0], [3, 0.24, 0]], [1.2563, [3, -0.24, 2.66316e-07], [3, 0.466667, -5.17837e-07]], [0.00302602, [3, -0.466667, 0], [3, 0, 0]]])
 
     try:
-    # uncomment the following line and modify the IP if you use this script outside Choregraphe.
-    # motion = ALProxy("ALMotion", IP, 9559)
         motion = ALProxy("ALMotion", ip, port)
         motion.angleInterpolationBezier(names, times, keys)
     except BaseException, err:
         print err
-
 
 def bow(ip, port):
     # Choregraphe bezier export in Python.
@@ -417,8 +401,6 @@ def bow(ip, port):
     keys.append([[0.0199001, [3, -0.333333, 0], [3, 0.64, 0]], [0.032172, [3, -0.64, -2.99606e-07], [3, 0.08, 3.74507e-08]], [0.032172, [3, -0.08, 0], [3, 0.813333, 0]], [0.0199001, [3, -0.813333, 0], [3, 0, 0]]])
 
     try:
-    # uncomment the following line and modify the IP if you use this script outside Choregraphe.
-    # motion = ALProxy("ALMotion", IP, 9559)
         motion = ALProxy("ALMotion", ip, port)
         motion.angleInterpolationBezier(names, times, keys)
     except BaseException, err:
@@ -500,8 +482,6 @@ def point_to(ip, port):
     keys.append([[0.032172, [3, -0.333333, 0], [3, 0.373333, 0]], [1.18267, [3, -0.373333, -0.0644281], [3, 0.32, 0.0552241]], [1.2379, [3, -0.32, 0], [3, 0.24, 0]], [1.2379, [3, -0.24, 3.99474e-07], [3, 0.44, -7.32369e-07]], [0.032172, [3, -0.44, 0], [3, 0, 0]]])
 
     try:
-    # uncomment the following line and modify the IP if you use this script outside Choregraphe.
-    # motion = ALProxy("ALMotion", IP, 9559)
         motion = ALProxy("ALMotion", ip, port)
         motion.angleInterpolationBezier(names, times, keys)
     except BaseException, err:
