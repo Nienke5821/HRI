@@ -26,7 +26,7 @@ u: (~yes) ~hello ^nextProposal
 u: (~no) ~hello ^nextProposal
 
 # introduction
-proposal: I will try to make it entertaining for you ^gotoReactivate(my_name)
+proposal: . I will try to make it entertaining for you ^gotoReactivate(my_name)
 
 # name
 proposal: %my_name What is your name?
@@ -65,7 +65,7 @@ proposal: %master Which Master will you follow?
 # like to study or not
 proposal: %askStudyHabit Do you like to study?
     u1:(~yes) Then you’re in the right place! There are lots of study spots in this building and even a Living Lab. ^gotoReactivate(tour)
-    u1:(~no) Haha, I get it! Luckily, there are also three student bars in this building. But don’t forget-studying is important too ^gotoReactivate(tour)
+    u1:(~no) Haha, I get it! Luckily, there are also three student bars in this building. But don’t forget-studying is important too.  ^gotoReactivate(tour)
     u1:(~repeat) I'll repeat it for you. ^sameProposal
     u1:(*) What? I meant ^sameProposal
 

@@ -24,7 +24,7 @@ proposal: %repeat2
     u1:(~no) ^gotoReactivate(questions2)
     u1:(*) Sorry I did not understand you, do I need to repeat something about the events? ^sameProposal
     
-proposal: %questions2 Do you have any questions? I can answer questions about the main hall, annual events, wervingsdagen?
+proposal: %questions2 Do you have any questions? I can answer questions about the main hall, annual events, or about wervingsdagen?
     u1:(~main) Up to 500 seated or 1,000 standing, depending on the setup. ^sameProposal
     u1:(~annual) The Green Office’s “Sustainability Fair” and the “International Student Welcome Day.” ^sameProposal
     u1:(~wervy) Students can meet representatives from over 180 companies, attend workshops, and explore career opportunities. ^sameProposal

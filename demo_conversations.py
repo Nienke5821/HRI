@@ -16,20 +16,6 @@ def have_one_dialog(ip, port, i):
 
         dialog.setLanguage("English")
 
-        topic_name_E = dialog.loadTopic("/home/nao/group_04/Entrance_enu.top")
-        topic_name_I = dialog.loadTopic("/home/nao/group_04/Introduction_enu.top")
-        topic_name_M = dialog.loadTopic("/home/nao/group_04/Middlefloor_enu.top")
-        topic_name_EL = dialog.loadTopic("/home/nao/group_04/Elevators_enu.top")
-
-        dialog.deactivateTopic(topic_name_I)
-        dialog.unloadTopic(topic_name_I)
-        dialog.deactivateTopic(topic_name_E)
-        dialog.unloadTopic(topic_name_E)
-        dialog.deactivateTopic(topic_name_M)
-        dialog.unloadTopic(topic_name_M)
-        dialog.deactivateTopic(topic_name_EL)
-        dialog.unloadTopic(topic_name_EL)
-
         subscription_name = "dialog_sequence_{}".format(i)
         topic_name = dialog.loadTopic(topic_paths[i])
         dialog.activateTopic(topic_name)

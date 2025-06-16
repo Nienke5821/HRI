@@ -93,24 +93,23 @@ if __name__ == "__main__":
         nao.Tracker() # track faces while pepper is talking
         
         if landmarkNumber == 0: # first conversation
-            movements.wave(ip, port) # gather attention, welcome people by waving
             nao.Say("Welcome everybody! I am Pepper, I will be your tour guide for today! Are you ready to start the tour?")
-            time.sleep(5)
+            movements.wave(ip, port) # gather attention, welcome people by waving
             conversations.have_one_dialog(ip, port, 0)
         elif landmarkNumber == 64:
             movements.gather_around(ip, port)
             nao.Say("Gather around. You are in for a ride! We are going to have so much fun together! Dont you think?")
-            time.sleep(4)
+            time.sleep(5)
             conversations.have_one_dialog(ip, port, 1)
             movements.hide_eyes(ip, port)
         elif landmarkNumber == 80:
             movements.gather_around(ip, port)
             nao.Say("Gather around. Atlas hosts a lot of fun activities don't you think?")
-            time.sleep(3)
+            time.sleep(4)
             conversations.have_one_dialog(ip, port, 2)
         elif landmarkNumber == 85:
-            movements.point_to(ip, port)
             nao.Say("We just passed the PhD defense room. Did you see it?")
+            movements.point_to(ip, port)
             time.sleep(3)
             conversations.have_one_dialog(ip, port, 3)
             nao.Say("Now it is time to give me a big round of applause.")
@@ -120,7 +119,6 @@ if __name__ == "__main__":
             movements.hide_eyes(ip, port)
             nao.Say("Unfortunately I do not have any information about this location.")
 
-        #time.sleep(3)
         nao.Tracker(0) # turn face tracker off such that it can focus on finding the next landmark
         
         movements.join_turn
