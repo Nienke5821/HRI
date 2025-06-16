@@ -9,10 +9,11 @@ concept:(annual) [annual events "annual events"]
 concept:(wervy) [wervy wervingsdagen career expo "career expo"]
 concept:(repeat) [repeat again understand]
 
-u: (e:onStart) ^gotoReactivate(intro2)
+u: (~yes) ~yes ^nextProposal
+u: (~no) ~yes ^nextProposal
 
 #Introduction
-proposal: %intro2 As I said, there is always a lot going on inside Atlas. The main floor of Atlas is a dynamic space hosting various events throughout the year. Notable events include the WinterTU/e Village, which transforms the area into a festive hub, and the Wervingsdagen Career Expo, where over 180 companies connect with students for career opportunities. Each week you can walk inside Atlas and wonder what big event is being organized now, it keeps me enthusiastic to come here every day. If I were a student, but I am a robot, so I don't really care.We are halfway on this tour. But before we continue do I need to repeat something?
+proposal: There is always a lot going on inside Atlas. The main floor of Atlas is a dynamic space hosting various events throughout the year. Notable events include the WinterTU/e Village, which transforms the area into a festive hub, and the Wervingsdagen Career Expo, where over 180 companies connect with students for career opportunities. Each week you can walk inside Atlas and wonder what big event is being organized now, it keeps me enthusiastic to come here every day. If I were a student, but I am a robot, so I don't really care. We are halfway on this tour. But before we continue do I need to repeat something?
 
 u1: (~yes) Shall I repeat the part about the events? ^gotoReactivate(repeat2)
 u1: (~no) ^gotoReactivate(questions2)
@@ -32,4 +33,3 @@ proposal: %questions2 Do you have any questions? I can answer questions about th
 
 # general
 u:(~repeat) I'll repeat for you. ^sameProposal
-#u:(*) I'm sorry, I didn't catch that. Could you say it again? ^sameProposal
