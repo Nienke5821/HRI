@@ -11,10 +11,11 @@ concept:(lucid) [lucid]
 concept:(name) [name building]
 concept:(repeat) [repeat again understand]
 
-u: (e:onStart) ^gotoReactivate(intro)
+u: (~yes) ~yes ^nextProposal
+u: (~no) ~yes ^nextProposal
 
 #Introduction
-proposal: %intro You are in for a ride! We are going to have so much fun together! You are currently standing in the Atlas Building, the heart of Eindhoven University of Technology. This building not only houses the university's executive board but also serves as a central hub for students, faculty, and various departments. Its modern architecture and sustainable design make it a landmark on campus. Follow me to the first stop of the tour! OKE HERE WE WALK Here we are! The busiest area of the building during lunchtime. Brownies and Downies do not only serve delicious food, but they also serve a big smile. They are located above the members space of Lucid. The study association of Industrial Design. The study associations at this university fulfill larger roles in comparison with other universities in the Netherlands. The study associations are not only for leisure, but they play significant roles within the fields of education and career. Providing course and curriculum feedback and organizing lunch lectures or drink lectures for visiting companies. There is always a lot going on within Atlas. But before we continue do I need to repeat something?
+proposal: You are currently standing in the Atlas Building, the heart of Eindhoven University of Technology. This building not only houses the university's executive board but also serves as a central hub for students, faculty, and various departments. Its modern architecture and sustainable design make it a landmark on campus. The busiest area of the building during lunchtime. Brownies and Downies do not only serve delicious food, but they also serve a big smile. They are located above the members space of Lucid. The study association of Industrial Design. The study associations at this university fulfill larger roles in comparison with other universities in the Netherlands. The study associations are not only for leisure, but they play significant roles within the fields of education and career. Providing course and curriculum feedback and organizing lunch or drink lectures for visiting companies. There is always a lot going on within Atlas. But before we continue do I need to repeat something?
 
 u1: (~yes) What part do I need to repeat? About the Lunch Area or about the Study Associations? ^gotoReactivate(repeat)
 u1: (~no) ^gotoReactivate(questions)
@@ -29,10 +30,9 @@ proposal: %repeat
 proposal: %questions Do you have any questions? I can answer questions about the purpose of the Atlas building, the location of Lucid or the name of the building?
     u1:(~purpose) Atlas serves as the main administrative center and houses several departments, study associations, and student facilities. ^sameProposal
     u1:(~lucid) Lucid is situated in the Atlas building on the TU/e campus. ^sameProposal
-    u1:(~name) It’s named after the Titan Atlas from Greek mythology—just as he held up the sky, this building supports the entire university community. ^sameProposal
+    u1:(~name) It’s named after the Titan Atlas from Greek mythology just as he held up the sky, this building supports the entire university community. ^sameProposal
     u1:(~no) Great, please follow me along. Let's walk towards the big red stairs in the middle of the building. Hopefully we do not need to walk up the stairs or I will have a problem! ! ^call(ALMemory.insertData("my_dialog/finished", 1)) $onStopped=1
     u1:(*) Sorry I did not understand or cannot answer your question. Please contact a real person for any other questions, but for now ^sameProposal
 
 # general
 u:(~repeat) I'll repeat for you. ^sameProposal
-#u:(*) I'm sorry, I didn't catch that. Could you say it again? ^sameProposal

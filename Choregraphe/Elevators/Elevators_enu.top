@@ -12,10 +12,11 @@ concept:(activities) [activities Intermate]
 concept:(events) [Industria events]
 concept:(repeat) [repeat again understand]
 
-u: (e:onStart) ^gotoReactivate(intro3)
+u: (~yes) ~yes ^nextProposal
+u: (~no) ~yes ^nextProposal
 
 #Introduction
-proposal: %intro3 We just passed the PhD defense room. Behind the elevators, you'll find two prominent study associations from the Department of Industrial Engineering & Innovation Sciences: Intermate and Industria. Intermate is the study association for students enrolled in the bachelor's programs Sustainable Innovation and Psychology & Technology, as well as the master's programs Human-Technology Interaction and Innovation Management. The association focuses on the intersection of technology, human behavior, and sustainability. Intermate organizes a variety of activities, including educational workshops, career events, and social gatherings, to support students academically and socially. Industria is the study association for students pursuing the bachelor's program Industrial Engineering and Management Sciences and the master's programs Innovation Management and Operations Management & Logistics. With approximately 1,400 members, Industria is one of the largest study associations at TU/e. The association aims to support students by organizing educational events, company visits, and social activities, fostering a strong community within the field of industrial engineering. Both associations play a vital role in enriching the student experience within their respective programs, offering opportunities for professional development, networking, and community building.We are at the end of the tour. Do I need to repeat something? 
+proposal: Ah it's right over there. Behind the elevators, you'll find two prominent study associations from the Department of Industrial Engineering & Innovation Sciences: Intermate and Industria. Intermate is the study association for Innovation Sciences. The association focuses on the intersection of technology, human behavior, and sustainability. Industria is the study association for Industrial Engineering. The association aims to support students by organizing educational, company, and social activities. Both associations play a vital role in enriching the student experience within their respective programs. Do I need to repeat something? 
 
 u1: (~yes) What part do I need to repeat? About the Phd students or about Intermate or Industria? ^gotoReactivate(repeat3)
 u1: (~no) ^gotoReactivate(questions3)
@@ -37,4 +38,3 @@ proposal: %questions3 Do you have any questions? I can answer questions about th
 
 # general
 u:(~repeat) I'll repeat for you. ^sameProposal
-#u:(*) I'm sorry, I didn't catch that. Could you say it again? ^sameProposal

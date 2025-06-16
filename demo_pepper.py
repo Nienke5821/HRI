@@ -81,55 +81,50 @@ def findTarget():
 if __name__ == "__main__":
     nao.InitProxy(ip,[0],port) # connect to Pepper
     motion.wakeUp() # make Pepper "alive" with autonomous mode turned off
-    time.sleep(1)
-    conversations_had = 0
+    
     landmarkNumber = 0 # initial value, starting point of tour, no landmark is detected yet so we set this to 0
+    
     while True: # endless loop
-        # first have the conversation matching the landmark
-        if conversations_had == 0: 
-            movements.wave(ip, port) # gather attention, welcome people by waving
-        elif landmarkNumber == 64 or landmarkNumber == 80: # want people to know pepper wants to say someting
-            nao.Say("Gather around.")
-            movements.gather_around(ip, port)
-        elif landmarkNumber == 85: # Pepper talks about something it just passed, so it points to it
-            movements.point_to(ip, port)
-        else: # Pepper does not have any text for this landmark, so it covers its eyes
-             movements.hide_eyes(ip, port)
+  
         # conversations.have_one_dialog(ip, port, landmarkNumber) # normally we do this and in this function it selects the
         # corresponding conversation, however, the implementation does not work so we have implemented something else that
         # shows the conversations and what is said in there
+
         nao.Tracker() # track faces while pepper is talking
+        
         if landmarkNumber == 0: # first conversation
-            nao.Say("Here I welcome you to my tour. This is the first conversation.")
+            nao.Say("Welcome everybody! I am Pepper, I will be your tour guide for today! Are you ready to start the tour?")
+            movements.wave(ip, port) # gather attention, welcome people by waving
+            conversations.have_one_dialog(ip, port, 0)
         elif landmarkNumber == 64:
-                nao.Say("Here you can find the restaurant Brownies and Downies. This is the second conversation. I make a joke that I hope I don't fall of the stairs.")
+            movements.gather_around(ip, port)
+            nao.Say("Gather around. You are in for a ride! We are going to have so much fun together! Dont you think?")
+            time.sleep(5)
+            conversations.have_one_dialog(ip, port, 1)
+            movements.hide_eyes(ip, port)
         elif landmarkNumber == 80:
-                nao.Say("Atlas organises a lot of activities. This is the third conversation.")
+            movements.gather_around(ip, port)
+            nao.Say("Gather around. Atlas hosts a lot of fun activities don't you think?")
+            time.sleep(4)
+            conversations.have_one_dialog(ip, port, 2)
         elif landmarkNumber == 85:
-                nao.Say("We just passed the PhD defense room. Here I tell you something about intermate. This is the fourth conversation. ")
-        else:
-             nao.Say("Unfortunately I do not have any information about this location.")
-        time.sleep(3)
-        nao.Tracker(0) # turn face tracker off such that it can focus on finding the next landmark
-        print(landmarkNumber)
-        conversations_had += 1
-        if landmarkNumber == 64: # nao makes a joke, and it makes a corresponding movement
-             movements.hide_eyes(ip, port)
-             time.sleep(1)
-        if conversations_had == 4: # all conversations have been had
-            time.sleep(2)
+            nao.Say("We just passed the PhD defense room. Did you see it?")
+            movements.point_to(ip, port)
+            time.sleep(3)
+            conversations.have_one_dialog(ip, port, 3)
             nao.Say("Now it is time to give me a big round of applause.")
             movements.bow(ip, port)
-            time.sleep(5)
-            break # quit the loop
-        time.sleep(2)
+            break
+        else:
+            movements.hide_eyes(ip, port)
+            nao.Say("Unfortunately I do not have any information about this location.")
+
+        nao.Tracker(0) # turn face tracker off such that it can focus on finding the next landmark
+        
         movements.join_turn
-        time.sleep(1)
         landmarkNumber = findTarget() # move to the next target
-        time.sleep(2)
         print("landmark detected", landmarkNumber)
         
-
     time.sleep(5)
     nao.Crouch()
 

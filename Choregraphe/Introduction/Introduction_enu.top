@@ -5,6 +5,7 @@ language: enu
 concept:(yes) [YES Yes YEs Y y yes "all right" sure "why not" ok certainly "very well" yep yea definitely amen]
 concept:(no) [NO No no N n nope "don't want" "no way" never "not at all"]
 concept:(repeat) [repeat again understand]
+concept:(hello) [hello hi hey "good morning" greetings]
 concept:(ai) [ai "artificial intelligence" "AI&ES" "artificial intelligence and engineering systems"]
 concept:(robotics) [robotics robot mechatronics]
 concept:(hti) ["human technoloy interaction" HTI]
@@ -19,18 +20,17 @@ concept:(ee) ["electrical engineering"]
 concept:(me) ["mechanical engineering"]
 concept:(be) ["biomedical engineering"]
 
-u: (e:onStart) i am talking ^gotoReactivate(intro)
+#u: (e:onStart) ^gotoReactivate(intro)
 
-#proposal: ~start ^gotoReactivate(intro)
+u: (~yes) ~hello ^nextProposal
+u: (~no) ~hello ^nextProposal
+
 # introduction
-proposal: %intro Welcome everybody! I am Pepper, I will be your tour guide for today! Are you ready to start the tour?
-    u1:(~yes) great! ^gotoReactivate(my_name)
-    u1:(~no) that is a shame, I will try to make it entertaining for you. ^gotoReactivate(my_name)
-    u1:(*) Let me repeat myself, I cant hear you! ^sameProposal
+proposal: . I will try to make it entertaining for you ^gotoReactivate(my_name)
 
 # name
 proposal: %my_name What is your name?
-    u1:(["my name is" "I'm" "Im" "I am"] _*) Nice to meet you $1! I hope you are looking forward to this tour! ^gotoReactivate(study_level)
+    u1:(["my name is" "I'm" "Im" "I am"]) Nice to meet you! I hope you are looking forward to this tour! ^gotoReactivate(study_level)
     u1:(*) Sorry I couldn't catch that ^sameProposal
 
 #study level
@@ -65,7 +65,7 @@ proposal: %master Which Master will you follow?
 # like to study or not
 proposal: %askStudyHabit Do you like to study?
     u1:(~yes) Then you’re in the right place! There are lots of study spots in this building and even a Living Lab. ^gotoReactivate(tour)
-    u1:(~no) Haha, I get it! Luckily, there are also three student bars in this building. But don’t forget-studying is important too ^gotoReactivate(tour)
+    u1:(~no) Haha, I get it! Luckily, there are also three student bars in this building. But don’t forget-studying is important too.  ^gotoReactivate(tour)
     u1:(~repeat) I'll repeat it for you. ^sameProposal
     u1:(*) What? I meant ^sameProposal
 
@@ -75,4 +75,3 @@ proposal: %tour Okay, let's start the tour! ^call(ALMemory.insertData("my_dialog
 
 # general
 u:(~repeat) I'll repeat for you. ^sameProposal
-u:(*) I'm sorry, I didn't catch that. Could you say it again? ^sameProposal
