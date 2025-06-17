@@ -40,6 +40,7 @@ def findTarget():
     detected = False # not detected
     motion.moveTo(0, 0, math.pi / 2) # rotate 90 degrees left
     motion.setAngles("HeadYaw", 1.2, 0.2) # look left
+    motion.setAngles("HeadPitch", 0.0, 0.2)
     time.sleep(1)
     while not detected:
         direction = "correct" # standing parallel with the wall
